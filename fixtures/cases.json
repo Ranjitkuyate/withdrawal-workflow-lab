@@ -1,0 +1,57 @@
+[
+  {
+    "id": "age-eligible-exact-balance",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "60", "request": {"amount": "1000.00", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "APPROVE", "reason_code": "AGE_ELIGIBLE", "available_amount": "1000.00", "requested_amount": "1000.00"}
+  },
+  {
+    "id": "age-boundary-is-eligible",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "59.5", "request": {"amount": "200.00", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "APPROVE", "reason_code": "AGE_ELIGIBLE", "available_amount": "1000.00", "requested_amount": "200.00"}
+  },
+  {
+    "id": "pending-hold-reduces-available-balance",
+    "input": {"account_balance": "1000.00", "pending_amount": "250.00", "participant_age": "60", "request": {"amount": "750.01", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "DENY", "reason_code": "INSUFFICIENT_AVAILABLE_BALANCE", "available_amount": "750.00", "requested_amount": "750.01"}
+  },
+  {
+    "id": "documented-hardship-is-approved",
+    "input": {"account_balance": "1000.00", "pending_amount": "100.00", "participant_age": "40", "request": {"amount": "350.00", "hardship_reason": "MEDICAL", "documents_complete": true}},
+    "expected": {"decision": "APPROVE", "reason_code": "DOCUMENTED_HARDSHIP", "available_amount": "900.00", "requested_amount": "350.00"}
+  },
+  {
+    "id": "hardship-without-documents-is-denied",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "40", "request": {"amount": "350.00", "hardship_reason": "MEDICAL", "documents_complete": false}},
+    "expected": {"decision": "DENY", "reason_code": "MISSING_HARDSHIP_DOCUMENTATION", "available_amount": "1000.00", "requested_amount": "350.00"}
+  },
+  {
+    "id": "unknown-hardship-reason-is-denied",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "40", "request": {"amount": "350.00", "hardship_reason": "VACATION", "documents_complete": true}},
+    "expected": {"decision": "DENY", "reason_code": "INVALID_HARDSHIP_REASON", "available_amount": "1000.00", "requested_amount": "350.00"}
+  },
+  {
+    "id": "under-age-without-hardship-is-denied",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "40", "request": {"amount": "350.00", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "DENY", "reason_code": "ELIGIBILITY_NOT_MET", "available_amount": "1000.00", "requested_amount": "350.00"}
+  },
+  {
+    "id": "zero-amount-is-denied",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "60", "request": {"amount": "0.00", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "DENY", "reason_code": "INVALID_AMOUNT", "available_amount": "1000.00", "requested_amount": null}
+  },
+  {
+    "id": "negative-amount-is-denied",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "60", "request": {"amount": "-1.00", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "DENY", "reason_code": "INVALID_AMOUNT", "available_amount": "1000.00", "requested_amount": null}
+  },
+  {
+    "id": "pending-cannot-exceed-balance",
+    "input": {"account_balance": "1000.00", "pending_amount": "1000.01", "participant_age": "60", "request": {"amount": "10.00", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "DENY", "reason_code": "INVALID_ACCOUNT_DATA", "available_amount": null, "requested_amount": null}
+  },
+  {
+    "id": "too-many-money-decimals-is-denied",
+    "input": {"account_balance": "1000.00", "pending_amount": "0.00", "participant_age": "60", "request": {"amount": "10.001", "hardship_reason": null, "documents_complete": false}},
+    "expected": {"decision": "DENY", "reason_code": "INVALID_AMOUNT", "available_amount": "1000.00", "requested_amount": null}
+  }
+]
