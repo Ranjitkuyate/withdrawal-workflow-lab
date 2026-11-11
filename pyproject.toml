@@ -1,0 +1,10 @@
+[project]
+name = "withdrawal-workflow-lab"
+version = "0.1.0"
+description = "A Python coding-task lab with fictional withdrawal rules, a verifier, and tests"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Ranjit Kuyate" }]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
